@@ -1,0 +1,17 @@
+spring.application.name: ott
+logging:
+  config: classpath:log4j2.yml
+
+kakao.api_key: eb494412fc82cf6b33420efbdfa9f3cb
+kakao.redirect_uri: http://localhost:8080/login/oauth2/code/kakao
+spring.profiles.include: private
+
+
+contents:
+  api:
+    domAPI:
+      url: http://kobis.or.kr/kobisopenapi/webservice/rest/
+      key: 967cf8ee6f706c2b9f6d8da986062c7d
+    intAPI:
+      url: https://api.themoviedb.org/3/
+      key: 402f0e771c58a51f6cc4b2c5eafa20ac
