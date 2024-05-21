@@ -21,9 +21,11 @@ dependencies {
 //	implementation("org.springframework.boot:spring-boot-starter-security") // 스프링 시큐리티
 //	implementation("org.springframework.security:spring-security-oauth2-client") // OAuth2 클라이언트 지원
 //	implementation("org.springframework.security:spring-security-oauth2-jose") // JWT 지원
+	implementation("org.projectlombok:lombok")
+	annotationProcessor("org.projectlombok:lombok") // 추가
+
 	implementation("org.springframework.boot:spring-boot-starter-webflux")
 	implementation("org.springframework.boot:spring-boot-starter-log4j2")	// log4j2
-
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 	testImplementation("org.springframework.security:spring-security-test")
 }

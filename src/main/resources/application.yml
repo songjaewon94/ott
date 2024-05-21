@@ -6,7 +6,6 @@ kakao.api_key: eb494412fc82cf6b33420efbdfa9f3cb
 kakao.redirect_uri: http://localhost:8080/login/auth
 spring.profiles.include: private
 
-
 contents:
   api:
     domAPI:
