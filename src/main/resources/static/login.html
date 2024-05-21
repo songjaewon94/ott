@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <title>Login with Kakao</title>
+</head>
+<body>
+<button id="kakao-login-btn">Login with Kakao</button>
+
+<script>
+    $(document).ready(function() {
+            $('#kakao-login-btn').click(function() {
+                $.ajax({
+                    url: '/login/code',
+                    method: 'GET',
+                    success: function(url) {
+                        window.location.href = url;
+                    },
+                    error: function(error) {
+                        console.error('Error:', error);
+                    }
+                });
+            });
+        });
+</script>
+</body>
+</html>

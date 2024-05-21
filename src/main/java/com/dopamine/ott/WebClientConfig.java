@@ -7,17 +7,6 @@ import org.springframework.web.reactive.function.client.WebClient;
 @Component
 public class WebClientConfig {
 
-
-    /*
-    @Bean
-    public ReactorResourceFactory resourceFactory() {
-        ReactorResourceFactory factory = new ReactorResourceFactory();
-        factory.setUseGlobalResources(false);
-        return factory;
-    }
-    */
-
-
     @Bean
     public WebClient webClientCreate(){
             return WebClient.create();

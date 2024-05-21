@@ -1,9 +1,9 @@
 spring.application.name: ott
-logging:
-  config: classpath:log4j2.yml
+#logging:
+#  config: classpath:log4j2.yml
 
 kakao.api_key: eb494412fc82cf6b33420efbdfa9f3cb
-kakao.redirect_uri: http://localhost:8080/login/oauth2/code/kakao
+kakao.redirect_uri: http://localhost:8080/login/auth
 spring.profiles.include: private
 
 
