@@ -37,6 +37,7 @@ public class ContentsController {
         String apiUrl = domApiInfo.get("url");
         String apiKey = domApiInfo.get("key");
 
+        // http://kobis.or.kr/kobisopenapi/webservice/rest/movie/searchMovieList.json?key=f5eef3421c602c6cb7ea224104795888
         String uri = UriComponentsBuilder.fromHttpUrl(apiUrl + "/movie/searchMovieList"+format)
                 .queryParam("client_id", apiKey)
                 .queryParam("response_type", "code")
@@ -51,7 +52,6 @@ public class ContentsController {
         } catch (RestClientException ex) {
             log.debug(" webclient error.{}, uri = {}", ex.toString(), uri);
         }
-
 
     }
 
