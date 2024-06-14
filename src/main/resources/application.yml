@@ -6,6 +6,35 @@ kakao.api_key: eb494412fc82cf6b33420efbdfa9f3cb
 kakao.redirect_uri: http://localhost:8080/login/auth
 spring.profiles.include: private
 
+spring:
+  datasource:
+    url: jdbc:h2:~/test
+    driverClassName: org.h2.Driver
+    username: sa
+    password: ""
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: create
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  profiles:
+    include: private
+  h2:
+    console:
+      enabled: true
+  http:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+jwt:
+  secret: brV+BhkMf5IquaNow0zQByH/gzSjfNUOzTtkC5T3e3A=
+
+
 contents:
   api:
     domAPI:

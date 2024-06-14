@@ -2,7 +2,7 @@ package com.dopamine.ott.contents.controller;
 
 import com.dopamine.ott.WebClientConfig;
 import com.dopamine.ott.contents.config.ApiProperties;
-import org.apache.logging.log4j.*;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -14,10 +14,9 @@ import org.springframework.web.util.UriComponentsBuilder;
 import java.util.Map;
 
 @RestController
+@Slf4j
 @RequestMapping("/api/contents")
 public class ContentsController {
-
-    private static final Logger log = LogManager.getLogger(ContentsController.class);
 
     @Autowired
     private WebClientConfig webClientConfig;

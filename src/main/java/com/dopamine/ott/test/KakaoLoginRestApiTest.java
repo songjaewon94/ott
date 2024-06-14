@@ -100,12 +100,6 @@ public class KakaoLoginRestApiTest {
                 .queryParam("response_type", "code")
                 .toUriString();
 
-//        String response = webClient.get()
-//                .uri(url)
-//                .retrieve()
-//                .bodyToMono(String.class)
-//                .block();  // 실제 비동기 환경에서는 block() 대신 subscribe() 사용
-
       return url;
     }
 
