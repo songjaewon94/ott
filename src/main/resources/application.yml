@@ -30,6 +30,9 @@ spring:
       charset: UTF-8
       enabled: true
       force: true
+  thymeleaf:
+    prefix: classpath:/tamplates/
+    suffix: .html
 
 jwt:
   secret: brV+BhkMf5IquaNow0zQByH/gzSjfNUOzTtkC5T3e3A=
