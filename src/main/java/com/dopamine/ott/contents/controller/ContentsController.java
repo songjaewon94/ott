@@ -1,6 +1,6 @@
 package com.dopamine.ott.contents.controller;
 
-import com.dopamine.ott.common.webclient.KoreanContentWebclientFactory;
+import com.dopamine.ott.user.connector.KaKaoApiClientContent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class ContentsController {
 
 
-    private final KoreanContentWebclientFactory koreanContentWebclientFactory;
+    private final KaKaoApiClientContent koreanContentWebclientFactory;
 
 
 

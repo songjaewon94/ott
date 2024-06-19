@@ -48,6 +48,7 @@ OTT 다양한 정보 제공 플랫폼을 제공합니다.
 ## 기술 스택
 - Java 17
 - Spring Boot 3.3
+- Spring Security
 - JPA
 - WebClient
 - H2 Database (Memory Mode)

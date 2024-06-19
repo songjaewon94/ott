@@ -1,13 +1,11 @@
-package com.dopamine.ott.common.webclient;
+package com.dopamine.ott.user.connector;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
 
 @Component
-public class KoreanContentWebclientFactory implements WebClientFactory{
-//    @Value("${contents.api.domAPI.url}")
-//    private String url;
+public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
 
     @Value("${contents.api.kobisAPI.key}")
     private String apiKey;
@@ -16,8 +14,7 @@ public class KoreanContentWebclientFactory implements WebClientFactory{
     private String kobisURI;
     private final WebClient webClient;
 
-    public KoreanContentWebclientFactory(@Value("${contents.api.kobisAPI.domain}") String url) {
-
+    public KaKaoApiClientContent(@Value("${contents.api.kobisAPI.domain}") String url) {
         this.webClient = WebClient.builder()
                 .baseUrl(url)
                 .defaultHeader("Accept", "application/json")
@@ -25,7 +22,7 @@ public class KoreanContentWebclientFactory implements WebClientFactory{
                 .build();
     }
 
-    @Override
+
     public String getMobieList() {
         return webClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -36,5 +33,15 @@ public class KoreanContentWebclientFactory implements WebClientFactory{
                 .bodyToMono(String.class)
                 .block();
 
+    }
+
+    @Override
+    public String getUserInfo() {
+        return null;
+    }
+
+    @Override
+    public String getAccessToken() {
+        return null;
     }
 }
