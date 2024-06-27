@@ -18,10 +18,12 @@ public class ContentsController {
 
 
 
+
     @GetMapping("/list")
     public void getContentsAll() {
         String krMobieList = koreanContentWebclientFactory.getMobieList();
         log.info(krMobieList);
+
 
     }
 
