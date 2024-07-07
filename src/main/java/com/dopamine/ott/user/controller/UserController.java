@@ -23,6 +23,7 @@ public class UserController {
     private final UserService userService;
     private final JwtUtil jwtUtil;
 
+
     @PostMapping("/signup")
     public ResponseEntity<?> signUp(@Valid @RequestBody UserSignUpReq user){
         boolean isValid = userService.validateUser(user.getName(), user.getRegNo());
