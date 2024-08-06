@@ -46,8 +46,8 @@ contents:
     kobisAPI:
       domain: http://kobis.or.kr
       uri: /kobisopenapi/webservice/rest/movie/searchMovieList.json
-      key: f5eef3421c602c6cb7ea224104795888
+      key: 82ca741a2844c5c180a208137bb92bd7
 
     intAPI:
       url: https://api.themoviedb.org/3/
-      key: 402f0e771c58a51f6cc4b2c5eafa20ac
+      key: 82ca741a2844c5c180a208137bb92bd7

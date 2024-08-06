@@ -1,6 +1,7 @@
 package com.dopamine.ott.contents.controller;
 
-import com.dopamine.ott.user.connector.KaKaoApiClientContent;
+
+import com.dopamine.ott.contents.connector.KorContentApiClientContent;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/contents")
 public class ContentsController {
 
-    private final KaKaoApiClientContent koreanContentWebclientFactory;
+    private final KorContentApiClientContent koreanContentWebclientFactory;
 
     @GetMapping("/list")
     public ResponseEntity<?> getContentsAll() {

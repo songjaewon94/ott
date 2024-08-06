@@ -15,7 +15,7 @@ public class JavaCodeTestMain {
                 .retrieve()
                 .bodyToMono(String.class)
                 .block();
-        System.out.println("result : 한글괴물");
+
         return result;
     }
 
