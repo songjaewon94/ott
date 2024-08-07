@@ -1,16 +1,23 @@
 package com.dopamine.ott.contents.svc;
 
+import com.dopamine.ott.contents.connector.KorContentApiClientContent;
 import com.dopamine.ott.user.connector.KaKaoApiClientContent;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 
+@Service
 @RequiredArgsConstructor
 public class KorContentService implements ContentsService{
 
-    private final KaKaoApiClientContent koreanContentWebclientFactory;
+    private final KorContentApiClientContent koreanContentWebclientFactory;
 
     @Override
     public String getContentServiceList() {
+        return koreanContentWebclientFactory.getContentList();
+    }
 
-        return "";
+    @Override
+    public String c(String movieCd) {
+        return koreanContentWebclientFactory.getContentDetailInfo(movieCd);
     }
 }
