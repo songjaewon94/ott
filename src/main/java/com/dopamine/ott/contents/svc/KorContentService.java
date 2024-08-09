@@ -17,7 +17,7 @@ public class KorContentService implements ContentsService{
     }
 
     @Override
-    public String c(String movieCd) {
+    public String getContentDetail(String movieCd) {
         return koreanContentWebclientFactory.getContentDetailInfo(movieCd);
     }
 }
