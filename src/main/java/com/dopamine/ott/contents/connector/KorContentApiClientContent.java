@@ -1,5 +1,6 @@
 package com.dopamine.ott.contents.connector;
 
+import com.dopamine.ott.contents.config.KobisApiProperties;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -9,20 +10,14 @@ import org.springframework.web.reactive.function.client.WebClientResponseExcepti
 @Component
 public class KorContentApiClientContent implements ContentWebClientFactory {
 
-    @Value("${contents.api.kobisAPI.key}")
-    private String apiKey;
-
-    @Value("${contents.api.kobisAPI.uris.movieList}")
-    private String kobisMovieListURI;
-
-    @Value("${contents.api.kobisAPI.uris.movieDetailInfo}")
-    private String kobisMovieDetailInfoURI;
+    private final KobisApiProperties kobisApiProperties;
 
     private final WebClient webClient;
 
-    public KorContentApiClientContent(@Value("${contents.api.kobisAPI.domain}") String url) {
+    public KorContentApiClientContent(KobisApiProperties kobisApiProperties) {
+        this.kobisApiProperties = kobisApiProperties;
         this.webClient = WebClient.builder()
-                .baseUrl(url)
+                .baseUrl(kobisApiProperties.getDomain())
                 .defaultHeader("Accept", "application/json")
                 .defaultHeader("User-Agent", "KoreanContentClient")
                 .build();
@@ -33,8 +28,8 @@ public class KorContentApiClientContent implements ContentWebClientFactory {
         try {
             return webClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(kobisMovieListURI)
-                            .queryParam("key", apiKey)
+                            .path(kobisApiProperties.getUris().getMovieList())
+                            .queryParam("key", kobisApiProperties.getKey())
                             .build())
                     .retrieve()
                     .bodyToMono(String.class)
@@ -55,8 +50,8 @@ public class KorContentApiClientContent implements ContentWebClientFactory {
         try {
             return webClient.get()
                     .uri(uriBuilder -> uriBuilder
-                            .path(kobisMovieDetailInfoURI)
-                            .queryParam("key", apiKey)
+                            .path(kobisApiProperties.getUris().getMovieDetailInfo())
+                            .queryParam("key", kobisApiProperties.getKey())
                             .queryParam("movieCd",movieCd)
                             .build())
                     .retrieve()

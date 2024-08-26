@@ -43,10 +43,10 @@ jwt:
 
 contents:
   api:
-    kobisAPI:
+    kobis:
       domain: http://kobis.or.kr
       key: 82ca741a2844c5c180a208137bb92bd7
       uris:
-        movieList: /kobisopenapi/webservice/rest/movie/searchMovieList.json
-        movieDetailInfo : /kobisopenapi/webservice/rest/movie/searchMovieInfo.json
+        movie-list: /kobisopenapi/webservice/rest/movie/searchMovieList.json
+        movie-detail-info : /kobisopenapi/webservice/rest/movie/searchMovieInfo.json
 
