@@ -1,4 +1,4 @@
-package com.dopamine.ott.common.config;
+package com.dopamine.ott.common.config.prop;
 
 import lombok.Data;
 import org.springframework.stereotype.Component;

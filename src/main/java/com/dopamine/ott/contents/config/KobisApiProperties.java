@@ -1,6 +1,6 @@
 package com.dopamine.ott.contents.config;
 
-import com.dopamine.ott.common.config.ApiProperties;
+import com.dopamine.ott.common.config.prop.ApiProperties;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.springframework.boot.context.properties.ConfigurationProperties;
