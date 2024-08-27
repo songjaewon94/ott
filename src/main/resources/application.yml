@@ -2,8 +2,7 @@ spring.application.name: ott
 #logging:
 #  config: classpath:log4j2.yml
 
-kakao.api_key: eb494412fc82cf6b33420efbdfa9f3cb
-kakao.redirect_uri: http://localhost:8080/login/auth
+
 spring.profiles.include: private
 
 spring:
@@ -40,13 +39,17 @@ spring:
 jwt:
   secret: brV+BhkMf5IquaNow0zQByH/gzSjfNUOzTtkC5T3e3A=
 
-
-contents:
-  api:
+api:
+  contents:
     kobis:
       domain: http://kobis.or.kr
       key: 82ca741a2844c5c180a208137bb92bd7
       uris:
         movie-list: /kobisopenapi/webservice/rest/movie/searchMovieList.json
         movie-detail-info : /kobisopenapi/webservice/rest/movie/searchMovieInfo.json
+  user:
+    kakao:
+      domain: https://kauth.kakao.com
+      key: eb494412fc82cf6b33420efbdfa9f3cb
+      redirect-uri: http://localhost:8080/login/auth
 

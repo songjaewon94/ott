@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @EqualsAndHashCode(callSuper = false)
-@ConfigurationProperties(prefix = "contents.api.kobis")
+@ConfigurationProperties(prefix = "api.contents.kobis")
 @Data
 public class KobisApiProperties extends ApiProperties {
     private Uris uris;
