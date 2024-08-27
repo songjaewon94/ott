@@ -13,5 +13,14 @@ import org.springframework.stereotype.Component;
 @Data
 public class KakaoApiProperties extends ApiProperties {
     private String redirectUri;
+    private Uris uris;
+    @Data
+    public static class Uris{
+        private String userInfo;
+        private String authorize;
+        private String token;
+
+    }
+
 
 }

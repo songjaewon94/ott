@@ -4,7 +4,6 @@ package com.dopamine.ott.user.controller;
 import com.dopamine.ott.user.config.KakaoApiProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,7 +31,7 @@ public class KakaoLoginRestApiController {
         String accessToken = "";
 
         String response = webClient.post()
-                .uri("/oauth/token")
+                .uri(kakaoApiProperties.getUris().getToken())
                 .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
                 .bodyValue("grant_type=authorization_code&client_id=" + kakaoApiProperties.getKey()
                         + "&redirect_uri=" + kakaoApiProperties.getRedirectUri()
@@ -53,14 +52,12 @@ public class KakaoLoginRestApiController {
         HashMap<String, Object> userInfo = new HashMap<>();
 
         String response = webClientKakaoUser.post()
-                .uri("/v2/user/me")
+                .uri(kakaoApiProperties.getUris().getUserInfo())
                 .header("Authorization", "Bearer " + accessToken)
                 .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
-
-        System.out.println("responseBody = " + response);
 
         try {
             JsonNode root = objectMapper.readTree(response);
@@ -81,17 +78,15 @@ public class KakaoLoginRestApiController {
     }
     @GetMapping("/login/auth")
     public String redirecstToKakao(@RequestParam String code) {
-        //토큰 얻기
         String accessToken = getAccessToken(code);
         Map<String, Object> userInfo = getUserInfo(accessToken);
 
         return userInfo.toString();
-//        return url;
     }
 
     @GetMapping("/login/code")
     public String redirectToKakao() {
-        String url = UriComponentsBuilder.fromHttpUrl("https://kauth.kakao.com/oauth/authorize")
+        String url = UriComponentsBuilder.fromHttpUrl(kakaoApiProperties.getDomain() + kakaoApiProperties.getUris().getAuthorize())
                 .queryParam("client_id", kakaoApiProperties.getKey())
                 .queryParam("redirect_uri", kakaoApiProperties.getRedirectUri())
                 .queryParam("response_type", "code")

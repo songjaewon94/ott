@@ -53,4 +53,9 @@ api:
       domain: https://kauth.kakao.com
       key: eb494412fc82cf6b33420efbdfa9f3cb
       redirect-uri: http://localhost:8080/login/auth
+      uris:
+        user-info: /v2/user/me
+        authorize: /oauth/authorize
+        token: /oauth/token
+
 
