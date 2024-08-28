@@ -1,6 +1,8 @@
 package com.dopamine.ott.user.controller;
 
 
+import com.dopamine.ott.common.enums.ContentType;
+import com.dopamine.ott.common.enums.HttpHeaders;
 import com.dopamine.ott.user.config.KakaoApiProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -32,7 +34,7 @@ public class KakaoLoginRestApiController {
 
         String response = webClient.post()
                 .uri(kakaoApiProperties.getUris().getToken())
-                .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
+                .header("Content-type", ContentType.FORM_URLENCODED.getMediaType())
                 .bodyValue("grant_type=authorization_code&client_id=" + kakaoApiProperties.getKey()
                         + "&redirect_uri=" + kakaoApiProperties.getRedirectUri()
                         + "&code=" + code)
@@ -53,8 +55,8 @@ public class KakaoLoginRestApiController {
 
         String response = webClientKakaoUser.post()
                 .uri(kakaoApiProperties.getUris().getUserInfo())
-                .header("Authorization", "Bearer " + accessToken)
-                .header("Content-type", "application/x-www-form-urlencoded;charset=utf-8")
+                .header(HttpHeaders.AUTHORIZATION.getHeaderName(), "Bearer " + accessToken)
+                .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), ContentType.FORM_URLENCODED.getMediaType())
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
