@@ -6,6 +6,10 @@ import com.dopamine.ott.common.enums.HttpHeaders;
 import com.dopamine.ott.user.config.KakaoApiProperties;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
+import org.springframework.http.MediaType;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -32,12 +36,16 @@ public class KakaoLoginRestApiController {
     public String getAccessToken(String code) {
         String accessToken = "";
 
+        Map<String, String> formData = new HashMap<>();
+        formData.put("grant_type", "authorization_code");
+        formData.put("client_id", kakaoApiProperties.getKey());
+        formData.put("redirect_uri", kakaoApiProperties.getRedirectUri());
+        formData.put("code", code);
+
         String response = webClient.post()
                 .uri(kakaoApiProperties.getUris().getToken())
-                .header("Content-type", ContentType.FORM_URLENCODED.getMediaType())
-                .bodyValue("grant_type=authorization_code&client_id=" + kakaoApiProperties.getKey()
-                        + "&redirect_uri=" + kakaoApiProperties.getRedirectUri()
-                        + "&code=" + code)
+                .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .bodyValue(formData)
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
