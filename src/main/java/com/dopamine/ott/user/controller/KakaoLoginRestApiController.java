@@ -4,18 +4,18 @@ package com.dopamine.ott.user.controller;
 import com.dopamine.ott.common.enums.ContentType;
 import com.dopamine.ott.common.enums.HttpHeaders;
 import com.dopamine.ott.user.config.KakaoApiProperties;
+import com.dopamine.ott.user.dto.KakaoUserInfo;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import org.springframework.http.MediaType;
-import org.springframework.util.LinkedMultiValueMap;
-import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.reactive.function.client.WebClient;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +33,7 @@ public class KakaoLoginRestApiController {
         this.webClient = webClientBuilder.baseUrl(kakaoApiProperties.getDomain()).build();
         this.webClientKakaoUser = webClientBuilder.baseUrl("https://kapi.kakao.com").build();
     }
+
     public String getAccessToken(String code) {
         String accessToken = "";
 
@@ -58,40 +59,13 @@ public class KakaoLoginRestApiController {
 
         return accessToken;
     }
-    public HashMap<String, Object> getUserInfo(String accessToken) {
-        HashMap<String, Object> userInfo = new HashMap<>();
 
-        String response = webClientKakaoUser.post()
-                .uri(kakaoApiProperties.getUris().getUserInfo())
-                .header(HttpHeaders.AUTHORIZATION.getHeaderName(), "Bearer " + accessToken)
-                .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), ContentType.FORM_URLENCODED.getMediaType())
-                .retrieve()
-                .bodyToMono(String.class)
-                .block(); // 블로킹 방식으로 동기 호출
-
-        try {
-            JsonNode root = objectMapper.readTree(response);
-            JsonNode properties = root.path("properties");
-            JsonNode kakaoAccount = root.path("kakao_account");
-
-            String nickname = properties.path("nickname").asText();
-            String email = kakaoAccount.path("email").asText();
-
-            userInfo.put("nickname", nickname);
-            userInfo.put("email", email);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return userInfo;
-    }
     @GetMapping("/login/auth")
-    public String redirecstToKakao(@RequestParam String code) {
+    public KakaoUserInfo redirecstToKakao(@RequestParam String code) {
         String accessToken = getAccessToken(code);
-        Map<String, Object> userInfo = getUserInfo(accessToken);
+        KakaoUserInfo kakaoUserInfo = getUserInfo(accessToken);
 
-        return userInfo.toString();
+        return kakaoUserInfo;
     }
 
     @GetMapping("/login/code")
@@ -103,6 +77,40 @@ public class KakaoLoginRestApiController {
                 .toUriString();
 
       return url;
+    }
+
+    private KakaoUserInfo getUserInfo(String accessToken) {
+
+        try {
+            String response = webClientKakaoUser.post()
+                    .uri(kakaoApiProperties.getUris().getUserInfo())
+                    .header(HttpHeaders.AUTHORIZATION.getHeaderName(), "Bearer " + accessToken)
+                    .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), ContentType.FORM_URLENCODED.getMediaType())
+                    .retrieve()
+                    .bodyToMono(String.class)
+                    .block();
+
+            return parseKakaoUserInfo(response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return KakaoUserInfo.builder().build();
+    }
+
+    private KakaoUserInfo parseKakaoUserInfo(String response) throws IOException {
+        JsonNode root = objectMapper.readTree(response);
+        JsonNode properties = root.path("properties");
+        JsonNode kakaoAccount = root.path("kakao_account");
+
+        String nickname = properties.path("nickname").asText(null);
+        String email = kakaoAccount.path("email").asText(null);
+
+        return KakaoUserInfo.builder()
+                .nickname(nickname)
+                .email(email)
+                .build();
     }
 
 }
