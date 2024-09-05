@@ -1,6 +1,5 @@
 package com.dopamine.ott.user.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -10,7 +9,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class KakaoUserInfo extends UserInfo {
-
-    String nickname;
+public class UserInfo {
+    private String email;
+    private String regNo;
 }
