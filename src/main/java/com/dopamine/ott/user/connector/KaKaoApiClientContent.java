@@ -19,22 +19,21 @@ import java.util.Map;
 @Component
 public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
 
-    private final ObjectMapper objectMapper;
+
     private final WebClient webClient;
     private final WebClient webClientKakaoUser;
     private final KakaoApiProperties kakaoApiProperties;
 
-    public KaKaoApiClientContent(WebClient.Builder webClientBuilder, ObjectMapper objectMapper, KakaoApiProperties kakaoApiProperties) {
+    public KaKaoApiClientContent(WebClient.Builder webClientBuilder, KakaoApiProperties kakaoApiProperties) {
         this.kakaoApiProperties = kakaoApiProperties;
-        this.objectMapper = objectMapper;
         this.webClient = webClientBuilder.baseUrl(kakaoApiProperties.getDomain()).build();
         this.webClientKakaoUser = webClientBuilder.baseUrl("https://kapi.kakao.com").build();
     }
 
     @Override
-    public UserInfo getUserInfo(String code) {
+    public String getUserInfo(String code) {
         try {
-            String response = webClientKakaoUser.post()
+            return  webClientKakaoUser.post()
                     .uri(kakaoApiProperties.getUris().getUserInfo())
                     .header(HttpHeaders.AUTHORIZATION.getHeaderName(), "Bearer " + getAccessToken(code))
                     .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), ContentType.FORM_URLENCODED.getMediaType())
@@ -42,13 +41,10 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
                     .bodyToMono(String.class)
                     .block();
 
-            return parseKakaoUserInfo(response);
-
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
-
-        return KakaoUserInfo.builder().build();
 
     }
 
@@ -70,7 +66,7 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
         try {
-            JsonNode root = objectMapper.readTree(response);
+            JsonNode root = new ObjectMapper().readTree(response);
             accessToken = root.path("access_token").asText();
         } catch (Exception e) {
             e.printStackTrace();
@@ -80,23 +76,7 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     }
 
 
-    private KakaoUserInfo parseKakaoUserInfo(String response) throws IOException {
-        JsonNode root = objectMapper.readTree(response);
-        JsonNode properties = root.path("properties");
-        JsonNode kakaoAccount = root.path("kakao_account");
 
-        String nickname = properties.path("nickname").asText(null);
-//        String email = kakaoAccount.path("email").asText(null);
-        return KakaoUserInfo.builder()
-                .nickname(nickname)
-                .build();
-
-//        KakaoUserInfo qwer = new KakaoUserInfo();
-//        return KakaoUserInfo.builder()
-//                .nickname(nickname)
-//                .re
-//                .build();
-    }
 
 
 }
