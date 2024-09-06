@@ -28,8 +28,8 @@ public class KakaoLoginRestApiController {
     }
 
     @GetMapping("/login/code")
-    public String code() {
-        return kakaoLoginSvc.getKakaoAuthRedirectUri();
+    public ResponseEntity<String> code() {
+        return ResponseEntity.ok(kakaoLoginSvc.getKakaoAuthRedirectUri());
     }
 
 }
