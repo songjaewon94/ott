@@ -17,8 +17,13 @@ public class KakaoLoginRestApiController {
 
     private final KakaoLoginSvc kakaoLoginSvc;
 
-
     @GetMapping("/login/auth")
+    public ResponseEntity<String>  auth() {
+        return ResponseEntity.ok(kakaoLoginSvc.getKakaoAuthRedirectUri());
+    }
+
+
+    @GetMapping("/login/code")
     public ResponseEntity<UserInfo> auth(@RequestParam String code) {
         try {
             return ResponseEntity.ok(kakaoLoginSvc.getUserInfo(code));
@@ -27,9 +32,6 @@ public class KakaoLoginRestApiController {
         }
     }
 
-    @GetMapping("/login/code")
-    public ResponseEntity<String> code() {
-        return ResponseEntity.ok(kakaoLoginSvc.getKakaoAuthRedirectUri());
-    }
+
 
 }
