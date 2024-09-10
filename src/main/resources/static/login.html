@@ -13,7 +13,7 @@
     $(document).ready(function() {
             $('#kakao-login-btn').click(function() {
                 $.ajax({
-                    url: '/login/code',
+                    url: '/login/auth',
                     method: 'GET',
                     success: function(url) {
                         window.location.href = url;
