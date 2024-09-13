@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.io.IOException;
@@ -52,16 +54,10 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     public String getAccessToken(String code) {
         String accessToken = "";
 
-        Map<String, String> formData = new HashMap<>();
-        formData.put("grant_type", "authorization_code");
-        formData.put("client_id", kakaoApiProperties.getKey());
-        formData.put("redirect_uri", kakaoApiProperties.getRedirectUri());
-        formData.put("code", code);
-
         String response = webClient.post()
                 .uri(kakaoApiProperties.getUris().getToken())
                 .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                .bodyValue(formData)
+                .bodyValue(createFormData(code))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
@@ -76,7 +72,16 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     }
 
 
+    private MultiValueMap<String, String> createFormData(String code) {
+        MultiValueMap<String, String> formDataMap = new LinkedMultiValueMap<>();
+        formDataMap.setAll(Map.of(
+                "grant_type", "authorization_code",
+                "client_id", kakaoApiProperties.getKey(),
+                "redirect_uri", kakaoApiProperties.getRedirectUri(),
+                "code", code
+        ));
 
-
+        return formDataMap;
+    }
 
 }
