@@ -8,5 +8,6 @@ import org.springframework.stereotype.Component;
 @Data
 public class ApiProperties {
     private String key;
-    private String domain;
+    private String authDomain;
+    private String apiDomain;
 }

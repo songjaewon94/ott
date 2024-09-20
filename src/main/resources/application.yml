@@ -50,7 +50,8 @@ api:
         movie-detail-info : /kobisopenapi/webservice/rest/movie/searchMovieInfo.json
   user:
     kakao:
-      domain: https://kauth.kakao.com
+      auth-domain: https://kauth.kakao.com
+      api-domain: https://kapi.kakao.com
       key: eb494412fc82cf6b33420efbdfa9f3cb
       redirect-uri: http://localhost:8080/login/auth
       uris:

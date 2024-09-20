@@ -1,7 +1,8 @@
 package com.dopamine.ott.user.connector;
 
-import com.dopamine.ott.common.enums.ContentType;
-import com.dopamine.ott.common.enums.HttpHeaders;
+import com.dopamine.ott.common.enums.ApiRequestKeys;
+import com.dopamine.ott.common.enums.AuthConstants;
+import org.springframework.http.HttpHeaders;
 import com.dopamine.ott.user.config.KakaoApiProperties;
 
 import com.fasterxml.jackson.databind.JsonNode;
@@ -13,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 
 @Component
@@ -25,8 +27,8 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
 
     public KaKaoApiClientContent(WebClient.Builder webClientBuilder, KakaoApiProperties kakaoApiProperties) {
         this.kakaoApiProperties = kakaoApiProperties;
-        this.webClient = webClientBuilder.baseUrl(kakaoApiProperties.getDomain()).build();
-        this.webClientKakaoUser = webClientBuilder.baseUrl("https://kapi.kakao.com").build();
+        this.webClient = webClientBuilder.baseUrl(kakaoApiProperties.getAuthDomain()).build();
+        this.webClientKakaoUser = webClientBuilder.baseUrl(kakaoApiProperties.getApiDomain()).build();
     }
 
     @Override
@@ -34,8 +36,9 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
         try {
             return  webClientKakaoUser.post()
                     .uri(kakaoApiProperties.getUris().getUserInfo())
-                    .header(HttpHeaders.AUTHORIZATION.getHeaderName(), "Bearer " + getAccessToken(code))
-                    .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), ContentType.FORM_URLENCODED.getMediaType())
+                    .header(HttpHeaders.AUTHORIZATION, String.join("",AuthConstants.BEARER.getValue(), getAccessToken(code)) )
+                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                    .header(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.name())
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
@@ -53,14 +56,15 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
 
         String response = webClient.post()
                 .uri(kakaoApiProperties.getUris().getToken())
-                .header(HttpHeaders.CONTENT_TYPE.getHeaderName(), MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+                .header(HttpHeaders.ACCEPT_CHARSET,StandardCharsets.UTF_8.name())
                 .bodyValue(createFormData(code))
                 .retrieve()
                 .bodyToMono(String.class)
                 .block(); // 블로킹 방식으로 동기 호출
         try {
             JsonNode root = new ObjectMapper().readTree(response);
-            accessToken = root.path("access_token").asText();
+            accessToken = root.path(AuthConstants.ACCESS_TOKEN.getValue()).asText();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -72,10 +76,10 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     private MultiValueMap<String, String> createFormData(String code) {
         MultiValueMap<String, String> formDataMap = new LinkedMultiValueMap<>();
         formDataMap.setAll(Map.of(
-                "grant_type", "authorization_code",
-                "client_id", kakaoApiProperties.getKey(),
-                "redirect_uri", kakaoApiProperties.getRedirectUri(),
-                "code", code
+                ApiRequestKeys.GRANT_TYPE, AuthConstants.AUTHORIZATION_CODE.getValue(),
+                ApiRequestKeys.CLIENT_ID, kakaoApiProperties.getKey(),
+                ApiRequestKeys.REDIRECT_URI, kakaoApiProperties.getRedirectUri(),
+                ApiRequestKeys.CODE, code
         ));
 
         return formDataMap;
