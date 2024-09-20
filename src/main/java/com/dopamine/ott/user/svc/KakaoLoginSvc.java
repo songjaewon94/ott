@@ -31,6 +31,14 @@ public class KakaoLoginSvc {
         return parseKakaoUserInfo(kaKaoApiClientContent.getUserInfo(code));
     }
 
+
+    public KakaoUserInfo getAccessToken(String code) throws IOException {
+
+        return parseKakaoUserInfo(kaKaoApiClientContent.getAccessToken(code));
+    }
+
+
+
     private KakaoUserInfo parseKakaoUserInfo(String response) throws IOException {
         JsonNode root = objectMapper.readTree(response);
         JsonNode properties = root.path("properties");

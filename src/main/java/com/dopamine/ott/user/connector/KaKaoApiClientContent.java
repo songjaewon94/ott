@@ -3,19 +3,16 @@ package com.dopamine.ott.user.connector;
 import com.dopamine.ott.common.enums.ContentType;
 import com.dopamine.ott.common.enums.HttpHeaders;
 import com.dopamine.ott.user.config.KakaoApiProperties;
-import com.dopamine.ott.user.dto.KakaoUserInfo;
-import com.dopamine.ott.user.dto.UserInfo;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Value;
+
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Component;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.Map;
 
 @Component

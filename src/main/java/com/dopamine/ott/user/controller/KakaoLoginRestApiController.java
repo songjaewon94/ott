@@ -19,14 +19,15 @@ public class KakaoLoginRestApiController {
 
     @GetMapping("/login/auth")
     public ResponseEntity<String>  auth() {
+
         return ResponseEntity.ok(kakaoLoginSvc.getKakaoAuthRedirectUri());
     }
 
 
     @GetMapping("/login/code")
-    public ResponseEntity<UserInfo> auth(@RequestParam String code) {
+    public ResponseEntity<UserInfo> code(@RequestParam String code) {
         try {
-            return ResponseEntity.ok(kakaoLoginSvc.getUserInfo(code));
+            return ResponseEntity.ok(kakaoLoginSvc.getAccessToken(code));
         }catch (Exception e ){
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
