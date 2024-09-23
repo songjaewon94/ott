@@ -15,6 +15,7 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.reactive.function.client.WebClient;
 
 import java.nio.charset.StandardCharsets;
+import java.util.Collections;
 import java.util.Map;
 
 @Component
@@ -34,14 +35,20 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     @Override
     public String getUserInfo(String code) {
         try {
-            return  webClientKakaoUser.post()
+            String accessToken = getAccessToken(code);
+            String authorizationHeader = String.format("%s%s", AuthConstants.BEARER.getValue(), accessToken);
+
+            return webClientKakaoUser.post()
                     .uri(kakaoApiProperties.getUris().getUserInfo())
-                    .header(HttpHeaders.AUTHORIZATION, String.join("",AuthConstants.BEARER.getValue(), getAccessToken(code)) )
-                    .header(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-                    .header(HttpHeaders.ACCEPT_CHARSET, StandardCharsets.UTF_8.name())
+                    .headers(headers -> {
+                        headers.set(HttpHeaders.AUTHORIZATION, authorizationHeader);
+                        headers.setContentType(MediaType.APPLICATION_FORM_URLENCODED);
+                        headers.setAcceptCharset(Collections.singletonList(StandardCharsets.UTF_8));
+                    })
                     .retrieve()
                     .bodyToMono(String.class)
                     .block();
+
 
         } catch (Exception e) {
             e.printStackTrace();
