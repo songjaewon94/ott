@@ -35,8 +35,8 @@ public class KaKaoApiClientContent implements SnsLoginWebClientFactory{
     @Override
     public String getUserInfo(String code) {
         try {
-            String accessToken = getAccessToken(code);
-            String authorizationHeader = String.format("%s%s", AuthConstants.BEARER.getValue(), accessToken);
+
+            String authorizationHeader = String.format("%s%s", AuthConstants.BEARER.getValue(), getAccessToken(code));
 
             return webClientKakaoUser.post()
                     .uri(kakaoApiProperties.getUris().getUserInfo())
