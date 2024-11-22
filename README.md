@@ -58,4 +58,5 @@
 - WebClient
 - H2 Database (Memory Mode)
 - Gradle
+- Redis
 
