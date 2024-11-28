@@ -1,11 +1,7 @@
-spring.application.name: ott
-#logging:
-#  config: classpath:log4j2.yml
-
-
-spring.profiles.include: private
-
 spring:
+  name: ott
+  profiles:
+    include: private
   datasource:
     url: jdbc:h2:~/test
     driverClassName: org.h2.Driver
